@@ -201,6 +201,8 @@
   },
   "error": {
     "validation_error": "Ошибка проверки",
+    "internetConnect":"подключен к интернету",
+    "badRecuest":"Запрос не выполнен",
     "Required_field": "Обязательное поле",
     "invalid_pass_code": "Неверный PIN-код",
     "no_app_to_open": "Приложение для открытия такого типа файла не найдено"

@@ -16,6 +16,8 @@ class BundleRepository {
       final response = await dio.get(
         'v1/bundle',
       );
+      print(
+          "responce bundle________________________________________________ $response");
       final List bundlesJson = response.data['result'];
       return bundlesJson.map((json) => BundleModel.fromJson(json)).toList();
     } on DioError catch (e) {

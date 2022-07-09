@@ -1,10 +1,12 @@
+import 'package:easy_localization/easy_localization.dart';
+
 class NoInternetException implements Exception {
   final String? message;
   NoInternetException({this.message});
 
   @override
   String toString() {
-    return message ?? 'You are not connected to the internet.';
+    return message ?? 'error.internetConnect'.tr();
   }
 }
 
@@ -14,7 +16,7 @@ class BadRequestException implements Exception {
 
   @override
   String toString() {
-    return message ?? 'Bad Request';
+    return message ?? 'error.badRecuest'.tr();
   }
 }
 

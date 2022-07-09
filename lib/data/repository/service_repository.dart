@@ -94,6 +94,8 @@ class ServiceRepository {
       final response = await dio.get(
         'v1/category/root',
       );
+      print("response_____________root_______________________ $response");
+
       final List<RootCategoryModel> rootCategoryList = response.data['result']
           .map((json) => RootCategoryModel.fromJson(json))
           .toList()

@@ -26,6 +26,9 @@ class NotificationRepository {
           .map((json) => NotificationModel.fromJson(json))
           .toList()
           .cast<NotificationModel>();
+
+      print(patientList);
+      
       return patientList;
     } on DioError catch (e) {
       if (e.error is SocketException || e.type == DioErrorType.connectTimeout) {

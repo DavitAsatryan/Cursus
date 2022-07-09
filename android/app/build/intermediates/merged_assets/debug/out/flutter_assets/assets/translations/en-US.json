@@ -199,6 +199,8 @@
   },
   "error": {
     "validation_error": "Validator error",
+    "internetConnect":"connected to the internet.",
+    "badRecuest":"Bad Request",
     "Required_field": "Required field",
     "invalid_pass_code": "Wrong PIN",
     "no_app_to_open": "No app found to open this file"

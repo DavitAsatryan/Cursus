@@ -45,6 +45,7 @@ Future<void> main() async {
   FirebaseMessaging.instance.getToken().then((value) {
     print("token $value");
   });
+  
   await GetStorage.init();
   await EasyLocalization.ensureInitialized();
 

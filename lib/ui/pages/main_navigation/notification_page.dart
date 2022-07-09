@@ -24,10 +24,16 @@ class _NotificationPageState extends State<NotificationPage> {
   var dateFormat = DateFormat('dd MMMM yy');
   PatientState patientState = PatientState();
 
+  Future<void> getNotyList() async {
+    await notificationState.geNotifications();
+  }
+
   @override
   void initState() {
     super.initState();
-    notificationState.geNotifications();
+    getNotyList();
+    //notificationState.geNotifications();
+    print(notificationState.geNotifications());
   }
 
   @override
@@ -74,6 +80,7 @@ class _NotificationPageState extends State<NotificationPage> {
                                     for (var notification
                                         in notificationState.notificationList) {
                                       if (notification.acknowledged) {
+                                        print("acknowledged");
                                         return;
                                       }
                                       setState(() {
@@ -88,8 +95,9 @@ class _NotificationPageState extends State<NotificationPage> {
                                     child: Text(
                                       'markAllAsRead'.tr(),
                                       style: const TextStyle(
+                                          decoration: TextDecoration.underline,
                                           fontWeight: FontWeight.bold,
-                                          fontSize: 20,
+                                          fontSize: 17,
                                           color: AppColors.darkGrey),
                                     ),
                                   ),
@@ -99,103 +107,156 @@ class _NotificationPageState extends State<NotificationPage> {
                             const SizedBox(
                               height: 10,
                             ),
-                            PagedListView<int, NotificationModel>(
-                              shrinkWrap: true,
-                              pagingController:
-                                  notificationState.pagingController,
-                              builderDelegate: PagedChildBuilderDelegate<
-                                      NotificationModel>(
-                                  itemBuilder: (context, item, index) =>
-                                      GestureDetector(
-                                        onTap: () {
-                                          notificationState
-                                              .markIDasRead(item.id);
-                                          if (item.action == 'NAVIGATE') {
-                                            item.resource == "ORDER"
-                                                ? AutoRouter.of(context).push(
-                                                    OrderDetailsRoute(
-                                                        oderID: item.entity!))
-                                                : AutoRouter.of(context).push(
-                                                    AddNewPatientRoute(
-                                                        id: item.entity,
-                                                        patientState:
-                                                            patientState));
-                                          }
-                                        },
-                                        child: Container(
-                                          height: 80,
-                                          margin: const EdgeInsets.symmetric(
-                                              horizontal: 12, vertical: 5),
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 0, horizontal: 10),
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(12),
-                                              border: !notificationState
-                                                      .notificationList[index]
-                                                      .acknowledged
-                                                  ? Border.all(
-                                                      color: AppColors
-                                                          .notificationItemColor,
-                                                      width: 2)
-                                                  : Border.all(
-                                                      color:
-                                                          AppColors.grey150)),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Expanded(
-                                                  child: Text(
+                            notificationState.storeState.state ==
+                                        StoreStates.loading ||
+                                    notificationState.storeState.state ==
+                                        StoreStates.initial
+                                ? const CircularProgressIndicator(
+                                    color: AppColors.purpleDark,
+                                  )
+                                : notificationState.storeState.state ==
+                                            StoreStates.success ||
+                                        notificationState
+                                            .notificationList.isNotEmpty
+                                    ? PagedListView<int, NotificationModel>(
+                                        shrinkWrap: true,
+                                        pagingController:
+                                            notificationState.pagingController,
+                                        builderDelegate:
+                                            PagedChildBuilderDelegate<
+                                                    NotificationModel>(
+                                                itemBuilder:
+                                                    (context, item, index) {
+                                          return GestureDetector(
+                                              onTap: () {
                                                 notificationState
-                                                    .notificationList[index]
-                                                    .fullText,
-                                                style: notificationState
+                                                    .markIDasRead(item.id);
+                                                if (item.action == 'NAVIGATE') {
+                                                  item.resource == "ORDER"
+                                                      ? AutoRouter.of(context)
+                                                          .push(
+                                                              OrderDetailsRoute(
+                                                                  oderID: item
+                                                                      .entity!))
+                                                      : AutoRouter.of(context)
+                                                          .push(AddNewPatientRoute(
+                                                              id: item.entity,
+                                                              patientState:
+                                                                  patientState));
+                                                }
+                                              },
+                                              child: Container(
+                                                height: 80,
+                                                margin:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 12,
+                                                        vertical: 5),
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 0,
+                                                        horizontal: 10),
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            12),
+                                                    border: !notificationState
                                                             .notificationList[
                                                                 index]
-                                                            .acknowledged ==
-                                                        false
-                                                    ? Styles.boldTextStyle.copyWith(
-                                                        color: AppColors
-                                                            .notificationItemColor,
-                                                        fontSize: 18)
-                                                    : Styles.mainTextStyle
-                                                        .copyWith(
-                                                            color:
-                                                                AppColors.black,
-                                                            fontSize: 18),
-                                                maxLines: 2,
-                                                overflow: TextOverflow.ellipsis,
-                                              )),
-                                              SizedBox(
-                                                width: 100,
-                                                child: Align(
-                                                    alignment:
-                                                        Alignment.centerRight,
-                                                    child: Text(
-                                                      '${dateFormat.format(notificationState.notificationList[index].createdAt)}',
-                                                      style: !notificationState
-                                                              .notificationList[
-                                                                  index]
-                                                              .acknowledged
+                                                            .acknowledged
+                                                        ? Border.all(
+                                                            color: AppColors
+                                                                .notificationItemColor,
+                                                            width: 2)
+                                                        : Border.all(
+                                                            color: AppColors
+                                                                .grey150)),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Expanded(
+                                                        child: Text(
+                                                      notificationState
+                                                          .notificationList[
+                                                              index]
+                                                          .fullText,
+                                                      style: notificationState
+                                                                  .notificationList[
+                                                                      index]
+                                                                  .acknowledged ==
+                                                              false
                                                           ? Styles.boldTextStyle
                                                               .copyWith(
-                                                                  fontSize: 16)
-                                                          : Styles
-                                                              .semiBoldTextStyle
-                                                              .copyWith(
-                                                                  fontSize: 16,
                                                                   color: AppColors
-                                                                      .black
-                                                                      .withOpacity(
-                                                                          .5)),
+                                                                      .notificationItemColor,
+                                                                  fontSize: 18)
+                                                          : Styles.mainTextStyle
+                                                              .copyWith(
+                                                                  color:
+                                                                      AppColors
+                                                                          .black,
+                                                                  fontSize: 18),
+                                                      maxLines: 2,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
                                                     )),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      )),
-                            )
+                                                    SizedBox(
+                                                      width: 100,
+                                                      child: Align(
+                                                          alignment: Alignment
+                                                              .centerRight,
+                                                          child: Text(
+                                                            '${dateFormat.format(notificationState.notificationList[index].createdAt)}',
+                                                            style: !notificationState
+                                                                    .notificationList[
+                                                                        index]
+                                                                    .acknowledged
+                                                                ? Styles
+                                                                    .boldTextStyle
+                                                                    .copyWith(
+                                                                        fontSize:
+                                                                            16)
+                                                                : Styles.semiBoldTextStyle.copyWith(
+                                                                    fontSize:
+                                                                        16,
+                                                                    color: AppColors
+                                                                        .black
+                                                                        .withOpacity(
+                                                                            .5)),
+                                                          )),
+                                                    )
+                                                  ],
+                                                ),
+                                              ));
+                                        }),
+                                      )
+                                    : notificationState.storeState.state ==
+                                                StoreStates.empty ||
+                                            notificationState
+                                                .notificationList.isEmpty
+                                        ? Center(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                SizedBox(
+                                                    height:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .height /
+                                                            5),
+                                                Text(
+                                                  'emptyList'.tr(),
+                                                  style:
+                                                      TextStyle(fontSize: 20),
+                                                ),
+                                              ],
+                                            ),
+                                          )
+                                        : Text('dataFetchingProblem'.tr()),
                           ])
                     : Center(
                         child: Column(

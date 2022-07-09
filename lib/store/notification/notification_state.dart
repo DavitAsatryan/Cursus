@@ -38,17 +38,24 @@ abstract class _NotificationState with Store {
         offset: currentOffset,
         limit: fetchLimit,
       );
+
+      print("noty list $notifications");
+
       final isLastPage = notifications.length < fetchLimit;
       if (isLastPage) {
         pagingController.appendLastPage(notifications);
+        print("noty list2 $notifications");
       } else {
         currentOffset += notifications.length;
         pagingController.appendPage(notifications, currentOffset);
+        print("noty list3 $notifications");
       }
       if (notifications.isEmpty) {
         storeState.changeState(StoreStates.empty);
+        print("noty list empty $notifications");
       } else {
         storeState.changeState(StoreStates.success);
+        print("noty list not empty $notifications");
       }
     } catch (e) {
       storeState.setErrorMessage(e.toString());
@@ -73,7 +80,7 @@ abstract class _NotificationState with Store {
     try {
       storeState.changeState(StoreStates.loading);
       notificationRepository.sendFCM(FCM, deviceId);
-    //  storeState.changeState(StoreStates.success);
+      //  storeState.changeState(StoreStates.success);
     } catch (e) {
       storeState.changeState(StoreStates.error);
     }

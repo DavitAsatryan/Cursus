@@ -16,7 +16,6 @@ abstract class _PersonalDataState with Store {
   final StoreState storeState = StoreState();
   UserRepository userRepository = UserRepository();
 
-
   @observable
   UserModel? user;
 
@@ -98,10 +97,9 @@ abstract class _PersonalDataState with Store {
       if (image != null) {
         selectedImage = File(image.path);
         updateAvatar();
-
       }
     } catch (e) {
-      storeState.setErrorMessage('Couldnt pick image from gallery');
+      storeState.setErrorMessage('imageIssues'.tr());
       storeState.changeState(StoreStates.error);
     }
   }
@@ -143,13 +141,11 @@ abstract class _PersonalDataState with Store {
           selectedImage!,
         );
       }
-      storeState.setSuccessMessage('User info updated successfully');
+      storeState.setSuccessMessage('userUpdatedSuccessfully'.tr());
       storeState.changeState(StoreStates.success);
     } catch (e) {
       storeState.setErrorMessage(e.toString());
       storeState.changeState(StoreStates.error);
     }
   }
-
-
 }

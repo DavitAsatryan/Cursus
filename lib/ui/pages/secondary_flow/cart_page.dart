@@ -101,9 +101,13 @@ class _CartPageState extends State<CartPage> {
                                       ),
                                       child: Padding(
                                         padding: const EdgeInsets.all(8.0),
-                                        child: checkoutState
-                                                    .checkoutList[index].icon ==
-                                                null
+                                        child: checkoutState.checkoutList[index]
+                                                        .icon ==
+                                                    null ||
+                                                checkoutState
+                                                        .checkoutList[index]
+                                                        .icon ==
+                                                    ""
                                             ? SvgPicture.asset(
                                                 'assets/icons/ic_default.svg')
                                             : Image.network(

@@ -31,7 +31,7 @@ class _ShoppingCartState extends State<ShoppingCart> {
           children: [
             Icon(
               Icons.shopping_cart_outlined,
-            //  size: 30,
+              //  size: 30,
               color: widget.color ?? AppColors.black,
             ),
             if (checkoutState.checkoutList.length > 0)

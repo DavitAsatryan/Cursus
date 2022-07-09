@@ -31,6 +31,7 @@ class GenderPicker extends StatelessWidget {
             children: [
               Expanded(
                 child: GenderContainer(
+                  result: 1,
                   value: 'hints.male'.tr(),
                   groupValue: selectedGender,
                   onChanged: onChanged,
@@ -41,6 +42,7 @@ class GenderPicker extends StatelessWidget {
               ),
               Expanded(
                 child: GenderContainer(
+                  result: 2,
                   value: 'hints.female'.tr(),
                   groupValue: selectedGender,
                   onChanged: onChanged,
@@ -55,15 +57,19 @@ class GenderPicker extends StatelessWidget {
 }
 
 class GenderContainer extends StatelessWidget {
+  final int result;
   final String value;
   final String groupValue;
   final ValueChanged<String?>? onChanged;
   const GenderContainer({
+    required this.result,
     required this.value,
     required this.groupValue,
     required this.onChanged,
     Key? key,
   }) : super(key: key);
+
+  static String valueGender = "";
 
   @override
   Widget build(BuildContext context) {
@@ -81,11 +87,22 @@ class GenderContainer extends StatelessWidget {
         padding: const EdgeInsets.only(right: 5),
         child: Row(
           children: [
-            Radio(
-              onChanged: onChanged,
-              value: value.trim().toLowerCase(),
-              groupValue: groupValue.trim().toLowerCase(),
-              activeColor: AppColors.purpleDark,
+            InkWell(
+              onTap: () {
+                if (result == 1) {
+                  valueGender = "male";
+                  print(valueGender);
+                } else if (result == 2) {
+                  valueGender = "female";
+                  print(valueGender);
+                }
+              },
+              child: Radio(
+                onChanged: onChanged,
+                value: value.trim().toLowerCase(),
+                groupValue: groupValue.trim().toLowerCase(),
+                activeColor: AppColors.purpleDark,
+              ),
             ),
             Text(
               value,

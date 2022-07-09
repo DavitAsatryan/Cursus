@@ -1,4 +1,3 @@
-
 import 'package:auto_route/auto_route.dart';
 import 'package:cursus_app/values/values.dart';
 import 'package:dio/dio.dart';

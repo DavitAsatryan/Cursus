@@ -221,9 +221,9 @@ mixin _$CheckoutState on _CheckoutState, Store {
       AsyncAction('_CheckoutState.getShippingPrice');
 
   @override
-  Future<void> getShippingPrice(double lat, double lng) {
+  Future<void> getShippingPrice(double? lat, double? lng) {
     return _$getShippingPriceAsyncAction
-        .run(() => super.getShippingPrice(lat, lng));
+        .run(() => super.getShippingPrice(lat!, lng!));
   }
 
   final _$checkPaymentStatusAsyncAction =

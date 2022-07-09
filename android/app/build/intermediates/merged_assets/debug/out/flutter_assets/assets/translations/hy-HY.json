@@ -201,6 +201,8 @@
   },
   "error": {
     "validation_error": "Վավերացման սխալ",
+    "internetConnect":"միացված է ինտերնետին",
+    "badRecuest":"Անհաջող հարցում",
     "Required_field": "Պարտադիր լրացման դաշտ",
     "invalid_pass_code": "Սխալ PIN կոդ",
     "no_app_to_open": "Ֆայլը բացելու համար ոչ մի ծրագիր չի գտնվել "
